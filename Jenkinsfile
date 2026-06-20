@@ -102,10 +102,9 @@ pipeline {
                     // Loop queries to verify if endpoint responds with 200 OK
                     sh '''
                         sleep 10
-                        BACKEND_SERVICE_IP=$(kubectl get svc quantum-backend-service -n quantum -o jsonpath='{.spec.clusterIP}')
-                        echo "Querying cluster endpoint: http://${BACKEND_SERVICE_IP}:8000/health"
+                        echo "Querying cluster endpoint: http://host.docker.internal:8000/health"
                         
-                        STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://${BACKEND_SERVICE_IP}:8000/health || echo "500")
+                        STATUS=$(curl -o /dev/null -s -w "%{http_code}" http://host.docker.internal:8000/health || echo "500")
                         if [ "$STATUS" -ne 200 ]; then
                             echo "API Gateway returned status code: $STATUS"
                             exit 1
