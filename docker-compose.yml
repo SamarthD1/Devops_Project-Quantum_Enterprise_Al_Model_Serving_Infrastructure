@@ -1,0 +1,85 @@
+services:
+  # 1. FastAPI AI Inference Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: quantum-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Named volume instead of host bind-mount to bypass macOS Desktop permission restrictions
+      - quantum-logs:/app/logs
+    environment:
+      - PORT=8000
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN=my-root-token
+    networks:
+      - quantum-network
+    restart: unless-stopped
+
+  # 2. Static Dashboard Frontend served via Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: quantum-frontend
+    ports:
+      - "3000:80"
+    networks:
+      - quantum-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # 3. Prometheus Telemetry Scraper (Builds locally to avoid host mounts)
+  prometheus:
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile
+    container_name: quantum-prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - quantum-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # 4. Grafana Dashboards Visualizer
+  grafana:
+    image: grafana/grafana:latest
+    container_name: quantum-grafana
+    ports:
+      - "3002:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - quantum-network
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # 5. Vault Secret Management Server (Dev Mode)
+  vault:
+    image: hashicorp/vault:latest
+    container_name: quantum-vault
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=my-root-token
+      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - quantum-network
+    restart: unless-stopped
+
+networks:
+  quantum-network:
+    name: quantum-network
+    driver: bridge
+
+volumes:
+  quantum-logs:
+    name: quantum-logs
