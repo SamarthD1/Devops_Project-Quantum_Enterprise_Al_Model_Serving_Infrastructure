@@ -65,13 +65,7 @@ pipeline {
         stage('Publish Images to Registry') {
             steps {
                 script {
-                    echo '=== Authenticating and Pushing Images to Registry ==='
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", DOCKER_HUB_CREDENTIALS_ID) {
-                        backendApp.push()
-                        backendLatest.push()
-                        frontendApp.push()
-                        frontendLatest.push()
-                    }
+                    echo '=== Skipped pushing images to remote registry for local deployment ==='
                 }
             }
         }
@@ -81,15 +75,13 @@ pipeline {
             steps {
                 script {
                     echo '=== Configuring Kubernetes Target Context ==='
-                    // In a real EKS setup, Jenkins runs: sh "aws eks update-kubeconfig --region ${AWS_DEFAULT_REGION} --name quantum-eks-cluster"
+                    // In a local Minikube setup, credentials are pre-configured
                     
                     echo '=== Deploying Manifests to Kubernetes ==='
                     sh "kubectl apply -f k8s/namespace.yaml"
                     sh "kubectl apply -f k8s/"
                     
-                    echo '=== Updating Container Image Tags to Match Build ==='
-                    sh "kubectl set image deployment/quantum-backend backend=${DOCKER_ORG}/${BACKEND_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}"
-                    sh "kubectl set image deployment/quantum-frontend frontend=${DOCKER_ORG}/${FRONTEND_IMAGE}:${BUILD_NUMBER} -n ${K8S_NAMESPACE}"
+                    echo '=== Local deployment complete, using pre-loaded latest images ==='
                 }
             }
         }
