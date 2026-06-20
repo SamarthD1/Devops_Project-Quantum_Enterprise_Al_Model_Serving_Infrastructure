@@ -120,7 +120,7 @@ pipeline {
         always {
             echo '=== Cleaning up build workspace ==='
             sh 'docker image prune -f'
-            cleanWs()
+            deleteDir()
         }
         success {
             echo "CI/CD Pipeline Successful for Build #${BUILD_NUMBER}"
