@@ -28,10 +28,9 @@ echo "=== E. Configuring Kubernetes ServiceAccount Token-Review Auth ==="
 # Enable Kubernetes authentication path
 vault auth enable kubernetes || echo "Kubernetes Auth already enabled"
 
-# Configure the connection to the Kubernetes API gateway inside the container network
-# Token Review uses the pod's local ServiceAccount tokens to authenticate.
 vault write auth/kubernetes/config \
-    kubernetes_host="https://kubernetes.default.svc:443"
+    kubernetes_host="https://kubernetes.default.svc:443" \
+    disable_local_ca_jwt=true
 
 # Create a role binding a ServiceAccount (in the 'quantum' namespace) to the policy
 vault write auth/kubernetes/role/quantum-app-role \
