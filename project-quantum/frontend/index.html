@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum AI - Enterprise Model Serving Portal</title>
+    <!-- Modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons for professional dashboard feel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Premium background glows -->
+    <div class="glow-bg-container">
+        <div class="glow-sphere glow-sphere-1"></div>
+        <div class="glow-sphere glow-sphere-2"></div>
+        <div class="glow-sphere glow-sphere-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <div class="logo-icon-container">
+                    <i class="fa-solid fa-circle-nodes logo-icon"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">QUANTUM</span>
+                    <span class="logo-subtitle">AI SERVING INFRA</span>
+                </div>
+            </div>
+            
+            <nav class="nav-links">
+                <a href="index.html" class="nav-item active">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span>Inference Console</span>
+                </a>
+                <a href="pages/registry.html" class="nav-item">
+                    <i class="fa-solid fa-server"></i>
+                    <span>Model Catalog</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="system-indicator">
+                    <span class="pulse-indicator status-green" id="api-pulse"></span>
+                    <span id="api-status-text">Connecting...</span>
+                </div>
+                <div class="version-badge">Version 1.0.0</div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
+            <!-- Top Navigation / Status Header Bar -->
+            <header class="top-header">
+                <div class="header-title-wrapper">
+                    <div class="breadcrumb">QUANTUM / INFERENCE CONSOLE</div>
+                    <h1>Enterprise AI Model Serving</h1>
+                </div>
+                <div class="connection-widget">
+                    <i class="fa-solid fa-shield-halved text-green"></i>
+                    <span>Gateway Secure</span>
+                </div>
+            </header>
+
+            <!-- Metrics / Health Grid -->
+            <div class="metrics-grid">
+                <!-- Card 1: API connection status -->
+                <div class="metric-card glass-card">
+                    <div class="card-icon-wrapper blue-glow">
+                        <i class="fa-solid fa-plug text-blue"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Service Gateway</h3>
+                        <p class="metric-value text-blue" id="health-api-status">OFFLINE</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Overall System Health -->
+                <div class="metric-card glass-card">
+                    <div class="card-icon-wrapper green-glow">
+                        <i class="fa-solid fa-circle-check text-green"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Cluster Status</h3>
+                        <p class="metric-value text-green" id="health-system-status">HEALTHY</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Total Predictions -->
+                <div class="metric-card glass-card">
+                    <div class="card-icon-wrapper purple-glow">
+                        <i class="fa-solid fa-chart-bar text-purple"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Session Audits</h3>
+                        <p class="metric-value text-purple" id="stats-total-predictions">0</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Last Response Latency -->
+                <div class="metric-card glass-card">
+                    <div class="card-icon-wrapper amber-glow">
+                        <i class="fa-solid fa-stopwatch text-amber"></i>
+                    </div>
+                    <div class="metric-info">
+                        <h3>Gateway Latency</h3>
+                        <p class="metric-value text-amber" id="stats-avg-latency">0 ms</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Layout (Two Columns: Left Inference, Right Simulator Control) -->
+            <div class="dashboard-body-grid">
+                <!-- Column 1: AI Model Prediction Console -->
+                <section class="console-section glass-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-sliders text-purple"></i> Inference Control Engine</h2>
+                        <span class="card-tag">Dynamic Forms</span>
+                    </div>
+                    
+                    <div class="console-body">
+                        <!-- Model Cards Selector (Production Grade Grid) -->
+                        <div class="model-selection-wrapper">
+                            <label class="section-label"><i class="fa-solid fa-cube"></i> Select Target Active Model</label>
+                            <div class="model-cards-grid">
+                                <div class="model-select-card active" data-model="loan" id="card-model-loan">
+                                    <div class="model-card-badge active-tag">Classification</div>
+                                    <div class="card-icon-circle"><i class="fa-solid fa-wallet"></i></div>
+                                    <h4>Loan Approval</h4>
+                                    <span class="card-meta">Version 1.0.0</span>
+                                    <div class="selection-indicator"></div>
+                                </div>
+                                <div class="model-select-card" data-model="house" id="card-model-house">
+                                    <div class="model-card-badge active-tag">Regression</div>
+                                    <div class="card-icon-circle"><i class="fa-solid fa-house-chimney"></i></div>
+                                    <h4>House Valuation</h4>
+                                    <span class="card-meta">Version 1.0.0</span>
+                                    <div class="selection-indicator"></div>
+                                </div>
+                                <div class="model-select-card" data-model="churn" id="card-model-churn">
+                                    <div class="model-card-badge active-tag">Classification</div>
+                                    <div class="card-icon-circle"><i class="fa-solid fa-users-slash"></i></div>
+                                    <h4>Churn Risk</h4>
+                                    <span class="card-meta">Version 1.0.0</span>
+                                    <div class="selection-indicator"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Inputs Form Container -->
+                        <form id="prediction-form" class="prediction-form-wrapper">
+                            <div class="section-label-container">
+                                <label class="section-label"><i class="fa-solid fa-keyboard"></i> Model Input Parameters</label>
+                                <span class="help-text">Validate raw values against schema thresholds</span>
+                            </div>
+                            
+                            <div id="dynamic-fields-container">
+                                <!-- Inputs generated by script.js dynamically -->
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="btn-predict">
+                                <span id="btn-text">Execute Model Inference</span>
+                                <span class="spinner hidden" id="predict-spinner"></span>
+                            </button>
+                        </form>
+
+                        <!-- Prediction Output Response Panel -->
+                        <div id="prediction-result-panel" class="result-panel hidden">
+                            <div class="result-panel-header">
+                                <div class="header-left">
+                                    <i class="fa-solid fa-circle-check text-green"></i>
+                                    <span>Inference Success</span>
+                                </div>
+                                <span class="badge" id="output-model-badge">Model</span>
+                            </div>
+                            <div class="result-panel-body">
+                                <div class="result-display-wrapper">
+                                    <span class="result-label">PREDICTED OUTCOME:</span>
+                                    <div class="result-big-value" id="output-value">Approved</div>
+                                </div>
+                                <div class="result-metadata-grid">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Client Latency</span>
+                                        <span class="meta-val" id="output-latency">0 ms</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Model Version</span>
+                                        <span class="meta-val" id="output-version">v1.0</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Response Time</span>
+                                        <span class="meta-val" id="output-time">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Prediction Error panel (fallback) -->
+                        <div id="prediction-error-panel" class="error-panel hidden">
+                            <div class="error-icon-circle">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="error-text">
+                                <h4 id="error-title">Inference Failure</h4>
+                                <p id="error-desc">Description of error goes here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Column 2: Chaos & DevOps Simulation Controller -->
+                <section class="control-section glass-card">
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-radiation text-amber"></i> MLOps Chaos Controller</h2>
+                        <span class="card-tag alert-tag">Simulation Deck</span>
+                    </div>
+                    
+                    <div class="control-body">
+                        <p class="panel-explainer">
+                            Simulate common platform issues to verify auto-restart loops, horizontal scalings, Alertmanager integrations, and Grafana anomaly triggers.
+                        </p>
+
+                        <!-- Latency Chaos Card -->
+                        <div class="chaos-item-card">
+                            <div class="chaos-card-info">
+                                <div class="chaos-title-row">
+                                    <i class="fa-solid fa-gauge-simple-high text-amber"></i>
+                                    <h4>Inject Latency Spike</h4>
+                                </div>
+                                <p>Delays next API response by 5000ms. Perfect for demonstrating API Gateway timeout triggers.</p>
+                            </div>
+                            <button class="btn btn-warning w-100" id="btn-chaos-latency">
+                                <span>Trigger Latency Loop</span>
+                                <span class="spinner hidden" id="latency-spinner"></span>
+                            </button>
+                        </div>
+
+                        <!-- 500 Error Chaos Card -->
+                        <div class="chaos-item-card">
+                            <div class="chaos-card-info">
+                                <div class="chaos-title-row">
+                                    <i class="fa-solid fa-bug text-red"></i>
+                                    <h4>Force HTTP 500 Failure</h4>
+                                </div>
+                                <p>Simulates a critical dependency break or database crash. Logs a structured JSON Stacktrace.</p>
+                            </div>
+                            <button class="btn btn-danger w-100" id="btn-chaos-error">
+                                <span>Crash API Node</span>
+                                <span class="spinner hidden" id="error-spinner"></span>
+                            </button>
+                        </div>
+
+                        <!-- Model Outages Simulation Card -->
+                        <div class="model-outage-box">
+                            <div class="box-header">
+                                <i class="fa-solid fa-power-off text-purple"></i>
+                                <div>
+                                    <h4>Simulate Model Outages</h4>
+                                    <p class="subtext">Simulates dynamic loader failure. Endpoint returns 503 Service Unavailable.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="toggle-list">
+                                <div class="toggle-item">
+                                    <div class="toggle-model-name">
+                                        <i class="fa-solid fa-wallet text-blue"></i>
+                                        <span>Loan Approval Endpoint</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked id="toggle-model-loan">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-item">
+                                    <div class="toggle-model-name">
+                                        <i class="fa-solid fa-house-chimney text-green"></i>
+                                        <span>House Valuation Endpoint</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked id="toggle-model-house">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-item">
+                                    <div class="toggle-model-name">
+                                        <i class="fa-solid fa-users-slash text-purple"></i>
+                                        <span>Churn Risk Endpoint</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" checked id="toggle-model-churn">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Bottom Section: History Logs -->
+            <section class="history-section glass-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-receipt text-green"></i> Real-time Transaction Ledger</h2>
+                    <button class="btn btn-secondary btn-sm" id="btn-clear-history"><i class="fa-solid fa-trash-can"></i> Clear Auditor Logs</button>
+                </div>
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Active Endpoint</th>
+                                <th>Request Payload Schema</th>
+                                <th>Inference Value</th>
+                                <th>Gateway Status</th>
+                                <th>Compute Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-log-body">
+                            <tr>
+                                <td colspan="6" class="no-records">No predictions submitted in this session.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

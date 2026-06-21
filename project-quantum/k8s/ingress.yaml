@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: quantum-ingress
+  namespace: quantum
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - http:
+      paths:
+      # 1. Routes API Calls to FastAPI Backend service
+      - path: /api(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: quantum-backend-service
+            port:
+              number: 8000
+      # 2. Routes Static UI Calls to Nginx Frontend service
+      - path: /(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: quantum-frontend-service
+            port:
+              number: 80
