@@ -5,6 +5,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: quantum-backend
+    user: "root"
     ports:
       - "8000:8000"
     volumes:
@@ -40,6 +41,8 @@ services:
     container_name: quantum-prometheus
     ports:
       - "9090:9090"
+    volumes:
+      - quantum-prometheus-data:/prometheus
     networks:
       - quantum-network
     depends_on:
@@ -48,7 +51,9 @@ services:
 
   # 4. Grafana Dashboards Visualizer
   grafana:
-    image: grafana/grafana:latest
+    build:
+      context: ./monitoring
+      dockerfile: Dockerfile-grafana
     container_name: quantum-grafana
     ports:
       - "3002:3000"
@@ -83,3 +88,5 @@ networks:
 volumes:
   quantum-logs:
     name: quantum-logs
+  quantum-prometheus-data:
+    name: quantum-prometheus-data
